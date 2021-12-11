@@ -1,14 +1,5 @@
 package torpedo;
 
-/** This project will help you get more familiar with arrays.
- *  You will be recreating the game of battleships.
- *  A player will place 5 of their ships on a 10 by 10 grid.
- *  The computer player will deploy five ships on the same grid.
- *  Once the game starts the player and computer take turns,
- *  trying to sink each other's ships by guessing the coordinates to "attack".
- *  The game ends when either the player or computer has no ships left.
- */
-
 import java.util.*;
 
 public class BattleShips {
@@ -20,12 +11,10 @@ public class BattleShips {
     public static int[][] missedGuesses = new int[numRows][numCols];
 
     public static void main(String[] args){
-        System.out.println("**** TORPEDO Játék 2021 ****");
-        System.out.println("A\n");
+        System.out.println("**** GAME OF TORPEDO 2021 ****");
         Scanner input = new Scanner(System.in);
         String player1 ="";
-        int torpedo;
-        System.out.print("Szia! Add meg a neved: ");
+        System.out.println("Szia! Add meg a neved: ");
         player1 = input.nextLine();
 
         //Step 1 – Create the ocean map
@@ -77,7 +66,7 @@ public class BattleShips {
     public static void deployPlayerShips(){
         Scanner input = new Scanner(System.in);
 
-        System.out.println("\nTedd le a hajóid:");
+        System.out.println("\nDeploy your ships:");
         //Deploying five ships for player
         BattleShips.playerShips = 5;
         for (int i = 1; i <= BattleShips.playerShips; ) {
