@@ -1,5 +1,6 @@
 package torpedo;
 
+import java.sql.*;
 import java.util.*;
 
 public class BattleShips {
@@ -10,12 +11,18 @@ public class BattleShips {
     public static String[][] grid = new String[numRows][numCols];
     public static int[][] missedGuesses = new int[numRows][numCols];
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws SQLException {
+
+
+        System.out.println("Battleship is starting........ ");
+
         System.out.println("**** GAME OF TORPEDO 2021 ****");
         Scanner input = new Scanner(System.in);
-        String player1 ="";
-        System.out.println("Szia! Add meg a neved: ");
-        player1 = input.nextLine();
+        System.out.print("Szia! Add meg a neved: ");
+        String player1 = input.nextLine();
+        System.out.println("");
+
+        database(player1);
 
         //Step 1 – Create the ocean map
         createOceanMap();
@@ -216,4 +223,32 @@ public class BattleShips {
             System.out.print(i);
         System.out.println();
     }
-}
+    public static void database(String player1) throws SQLException {
+
+        Connection con = DriverManager.getConnection("jdbc:h2:tcp://localhost/./prog", "sa", "");
+
+        Statement st = con.createStatement();
+        System.out.println(insert(st, player1, 0));
+       /* ResultSet rs = st.executeQuery("select * from USERS");
+        while (rs.next()) {
+            System.out.println(rs.getString("NEV"));
+            System.out.println(rs.getInt("PONT"));
+        }
+        */
+        con.close();
+
+        // Display message for successful execution of program
+        System.out.println("Sikeres adatbázis kapcsolat!");
+        System.out.println(player1 + " bekerült az adatbázisba!");
+        System.out.println("");
+    }
+    public static int insert(Statement st, String name, Integer pont) throws SQLException{
+        String query ="INSERT INTO USERS(NEV, PONT) VALUES ('" + name +"', " + pont +");";
+        return st.executeUpdate(query);
+
+    }
+
+    }
+
+
+
