@@ -70,15 +70,6 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.2</version>
                 <configuration>
-                    <excludes>
-                        <exclude>hu/nye/progtech/sudoku/model/*</exclude>
-                        <exclude>hu/nye/progtech/sudoku/xml/model/*</exclude>
-                        <exclude>hu/nye/progtech/sudoku/persistence/xml/PersistableMapVO.*</exclude>
-                        <exclude>hu/nye/progtech/sudoku/Main.*</exclude>
-                        <exclude>hu/nye/progtech/sudoku/**/*Exception.*</exclude>
-                        <exclude>hu/nye/progtech/sudoku/**/*Configuration.*</exclude>
-                        <exclude>hu/nye/progtech/sudoku/ui/PrintWrapper.*</exclude>
-                    </excludes>
                 </configuration>
                 <executions>
                     <execution>

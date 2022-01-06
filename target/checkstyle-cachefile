@@ -1,4 +1,5 @@
-#Thu Jan 06 10:34:03 CET 2022
+#Thu Jan 06 19:28:34 CET 2022
 configuration*?=31FACEA4804B391CD9789D6CC3EAEFBD02ED7493
-module-resource*?\:checkstyle-xpath-suppressions.xml=3C923CE487F5C60FBC36DADC2070BE0510AF519A
-module-resource*?\:checkstyle-suppressions.xml=F1D8CF9345E17E67D6B0D1698C67472F42727B74
+/Users/Tomika/Documents/GitHub/nye-progtech/src/main/java/torpedo/configurations/ApplicationConfiguration.java=1641493481045
+module-resource*?\:checkstyle-xpath-suppressions.xml=673EED37419E92837823443874FE40EE0DA22EDB
+module-resource*?\:checkstyle-suppressions.xml=2C83841232B4BD2F9B71979053CC855166DD2397

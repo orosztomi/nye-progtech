@@ -1,11 +1,8 @@
-package hu.nye.progtech.torpedo.configurations;
+package torpedo.configurations;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-
+/** Configure the spring framework for application. */
 @Configuration
 public class ApplicationConfiguration {
 

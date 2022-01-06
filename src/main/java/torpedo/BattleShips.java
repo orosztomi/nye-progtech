@@ -3,22 +3,28 @@ package torpedo;
 import java.sql.*;
 import java.util.*;
 
+/** BattleShips class */
 public class BattleShips {
     public static int numRows = 10;
     public static int numCols = 10;
+    public static int pontszam = 0;
     public static int playerShips;
     public static int computerShips;
     public static String[][] grid = new String[numRows][numCols];
     public static int[][] missedGuesses = new int[numRows][numCols];
 
+    /** Main class */
     public static void main(String[] args) throws SQLException {
-        System.out.println("**** GAME OF TORPEDO 2021 ****");
+
+        message();
+        System.out.println("Szia! ");
         Scanner input = new Scanner(System.in);
-        System.out.print("Szia! Add meg a neved: ");
+        System.out.print("Add meg a neved: ");
         String player1 = input.nextLine();
         System.out.println("");
 
         database(player1);
+
 
         //Step 1 – Create the ocean map
         createOceanMap();
@@ -38,12 +44,13 @@ public class BattleShips {
         gameOver();
     }
 
+    /** createOceanMap class */
     public static void createOceanMap() {
         //First section of Ocean Map
         System.out.print("  ");
         for (int i = 0; i < numCols; i++)
             System.out.print(i);
-        System.out.println();
+            System.out.println();
 
         //Middle section of Ocean Map
         for (int i = 0; i < grid.length; i++) {
@@ -178,13 +185,17 @@ public class BattleShips {
 
     public static void gameOver() {
         System.out.println("Your ships: " + BattleShips.playerShips + " | AI ships: " + BattleShips.computerShips);
-        if (BattleShips.playerShips > 0 && BattleShips.computerShips <= 0)
+        if (BattleShips.playerShips > 0 && BattleShips.computerShips <= 0) {
             System.out.println("You won the battle :)");
+            pontszam = pontszam + 100;
+        }
         else
             System.out.println("You lost the battle");
         System.out.println();
+
     }
 
+    /** Implementation of printOceanMap. */
     public static void printOceanMap() {
         System.out.println();
         //First section of Ocean Map
@@ -211,12 +222,15 @@ public class BattleShips {
         System.out.println();
     }
 
+    /** Add database conncetion. */
     public static void database(String player1) throws SQLException {
 
         Connection con = DriverManager.getConnection("jdbc:h2:tcp://localhost/./prog", "sa", "");
 
         Statement st = con.createStatement();
         System.out.println(insert(st, player1, 0));
+        int pont = 100;
+        System.out.println(pont(st, player1, pont));
        /* ResultSet rs = st.executeQuery("select * from USERS");
         while (rs.next()) {
             System.out.println(rs.getString("NEV"));
@@ -226,8 +240,8 @@ public class BattleShips {
         con.close();
 
         // Display message for successful execution of program
-        System.out.println("Sikeres adatbázis kapcsolat!");
-        System.out.println(player1 + " bekerült az adatbázisba!");
+        System.out.println("Success!");
+        System.out.println(player1 + " added into database!");
         System.out.println("");
     }
 
@@ -235,6 +249,24 @@ public class BattleShips {
         String query = "INSERT INTO USERS(NEV, PONT) VALUES ('" + name + "', " + pont + ");";
         return st.executeUpdate(query);
 
+    }
+
+    public static int pont(Statement st, String player1, Integer pont) throws SQLException {
+        String query = "UPDATE USERS SET PONT= " + pont  +  "WHERE NEV= " +"'" +player1 +"'" + ";";
+        return st.executeUpdate(query);
+
+    }
+    public static void message(){
+        System.out.println(" \n" +
+                        "▀█████████▄     ▄████████     ███         ███      ▄█          ▄████████    ▄████████    ▄█    █▄     ▄█     ▄███████▄ \n" +
+                        "  ███    ███   ███    ███ ▀█████████▄ ▀█████████▄ ███         ███    ███   ███    ███   ███    ███   ███    ███    ███ \n" +
+                        "  ███    ███   ███    ███    ▀███▀▀██    ▀███▀▀██ ███         ███    █▀    ███    █▀    ███    ███   ███▌   ███    ███ \n" +
+                        " ▄███▄▄▄██▀    ███    ███     ███   ▀     ███   ▀ ███        ▄███▄▄▄       ███         ▄███▄▄▄▄███▄▄ ███▌   ███    ███ \n" +
+                        "▀▀███▀▀▀██▄  ▀███████████     ███         ███     ███       ▀▀███▀▀▀     ▀███████████ ▀▀███▀▀▀▀███▀  ███▌ ▀█████████▀  \n" +
+                        "  ███    ██▄   ███    ███     ███         ███     ███         ███    █▄           ███   ███    ███   ███    ███        \n" +
+                        "  ███    ███   ███    ███     ███         ███     ███▌    ▄   ███    ███    ▄█    ███   ███    ███   ███    ███        \n" +
+                        "▄█████████▀    ███    █▀     ▄████▀      ▄████▀   █████▄▄██   ██████████  ▄████████▀    ███    █▀    █▀    ▄████▀    	\n" +
+                        "************************************************GAME OF TORPEDO 2022**************************************************");
     }
 
 }
