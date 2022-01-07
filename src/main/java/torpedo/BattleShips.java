@@ -1,9 +1,13 @@
 package torpedo;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
 
-/** BattleShips class */
+/** BattleShips class. */
+
 public class BattleShips {
     public static int numRows = 10;
     public static int numCols = 10;
@@ -13,10 +17,10 @@ public class BattleShips {
     public static String[][] grid = new String[numRows][numCols];
     public static int[][] missedGuesses = new int[numRows][numCols];
 
-    /** Main class */
+    /** Main class. */
+
     public static void main(String[] args) throws SQLException {
 
-        message();
         System.out.println("Szia! ");
         Scanner input = new Scanner(System.in);
         System.out.print("Add meg a neved: ");
@@ -37,41 +41,46 @@ public class BattleShips {
 
         //Step 4 Battle
         do {
-            Battle();
+            battle();
         } while (BattleShips.playerShips != 0 && BattleShips.computerShips != 0);
 
         //Step 5 - Game over
         gameOver();
     }
 
-    /** createOceanMap class */
+    /** createOceanMap class. */
+
     public static void createOceanMap() {
         //First section of Ocean Map
         System.out.print("  ");
-        for (int i = 0; i < numCols; i++)
+        for (int i = 0; i < numCols; i++) {
             System.out.print(i);
             System.out.println();
-
+        }
         //Middle section of Ocean Map
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
                 grid[i][j] = " ";
-                if (j == 0)
+                if (j == 0) {
                     System.out.print(i + "|" + grid[i][j]);
-                else if (j == grid[i].length - 1)
+                } else if (j == grid[i].length - 1) {
                     System.out.print(grid[i][j] + "|" + i);
-                else
+                } else {
                     System.out.print(grid[i][j]);
+                }
             }
             System.out.println();
         }
 
         //Last section of Ocean Map
         System.out.print("  ");
-        for (int i = 0; i < numCols; i++)
+        for (int i = 0; i < numCols; i++) {
             System.out.print(i);
-        System.out.println();
+            System.out.println();
+        }
     }
+
+    /** Main class. */
 
     public static void deployPlayerShips() {
         Scanner input = new Scanner(System.in);
@@ -88,13 +97,16 @@ public class BattleShips {
             if ((x >= 0 && x < numRows) && (y >= 0 && y < numCols) && (grid[x][y] == " ")) {
                 grid[x][y] = "@";
                 i++;
-            } else if ((x >= 0 && x < numRows) && (y >= 0 && y < numCols) && grid[x][y] == "@")
+            } else if ((x >= 0 && x < numRows) && (y >= 0 && y < numCols) && grid[x][y] == "@") {
                 System.out.println("You can't place two or more ships on the same location");
-            else if ((x < 0 || x >= numRows) || (y < 0 || y >= numCols))
+            } else if ((x < 0 || x >= numRows) || (y < 0 || y >= numCols)) {
                 System.out.println("You can't place ships outside the " + numRows + " by " + numCols + " grid");
+            }
         }
         printOceanMap();
     }
+
+    /** deployComputerShips class. */
 
     public static void deployComputerShips() {
         System.out.println("\nComputer is deploying ships");
@@ -113,7 +125,9 @@ public class BattleShips {
         printOceanMap();
     }
 
-    public static void Battle() {
+    /** Battle class. */
+
+    public static void battle() {
         playerTurn();
         computerTurn();
 
@@ -124,9 +138,13 @@ public class BattleShips {
         System.out.println();
     }
 
+
+    /** playerTurn class. */
+
     public static void playerTurn() {
         System.out.println("\nYOUR TURN");
-        int x = -1, y = -1;
+        int x = -1;
+        int y = -1;
         do {
             Scanner input = new Scanner(System.in);
             System.out.print("Enter X coordinate: ");
@@ -134,10 +152,8 @@ public class BattleShips {
             System.out.print("Enter Y coordinate: ");
             y = input.nextInt();
 
-            if ((x >= 0 && x < numRows) && (y >= 0 && y < numCols)) //valid guess
-            {
-                if (grid[x][y] == "x") //if computer ship is already there; computer loses ship
-                {
+            if ((x >= 0 && x < numRows) && (y >= 0 && y < numCols)) {
+                if (grid[x][y] == "x") {
                     System.out.println("Boom! You sunk the ship!");
                     grid[x][y] = "!"; //Hit mark
                     --BattleShips.computerShips;
@@ -150,22 +166,26 @@ public class BattleShips {
                     System.out.println("Sorry, you missed");
                     grid[x][y] = "-";
                 }
-            } else if ((x < 0 || x >= numRows) || (y < 0 || y >= numCols))  //invalid guess
+            } else if ((x < 0 || x >= numRows) || (y < 0 || y >= numCols)) {
                 System.out.println("You can't place ships outside the " + numRows + " by " + numCols + " grid");
+            }
         } while ((x < 0 || x >= numRows) || (y < 0 || y >= numCols));  //keep re-prompting till valid guess
     }
+
+
+    /** computerTurn class. */
 
     public static void computerTurn() {
         System.out.println("\nAI TURN");
         //Guess co-ordinates
-        int x = -1, y = -1;
+        int x = -1;
+        int y = -1;
         do {
             x = (int) (Math.random() * 10);
             y = (int) (Math.random() * 10);
 
             if ((x >= 0 && x < numRows) && (y >= 0 && y < numCols)) {
-                if (grid[x][y] == "@") //if player ship is already there; player loses ship
-                {
+                if (grid[x][y] == "@") {
                     System.out.println("The AI sunk one of your ships!");
                     grid[x][y] = "x";
                     --BattleShips.playerShips;
@@ -176,33 +196,37 @@ public class BattleShips {
                 } else if (grid[x][y] == " ") {
                     System.out.println("AI missed");
                     //Saving missed guesses for computer
-                    if (missedGuesses[x][y] != 1)
+                    if (missedGuesses[x][y] != 1) {
                         missedGuesses[x][y] = 1;
+                    }
                 }
             }
         } while ((x < 0 || x >= numRows) || (y < 0 || y >= numCols));  //keep re-prompting till valid guess
     }
+    /** gameOver class. */
 
     public static void gameOver() {
         System.out.println("Your ships: " + BattleShips.playerShips + " | AI ships: " + BattleShips.computerShips);
         if (BattleShips.playerShips > 0 && BattleShips.computerShips <= 0) {
             System.out.println("You won the battle :)");
             pontszam = pontszam + 100;
-        }
-        else
+        } else {
             System.out.println("You lost the battle");
-        System.out.println();
+            System.out.println();
+        }
 
     }
 
     /** Implementation of printOceanMap. */
+
     public static void printOceanMap() {
         System.out.println();
         //First section of Ocean Map
         System.out.print("  ");
-        for (int i = 0; i < numCols; i++)
+        for (int i = 0; i < numCols; i++) {
             System.out.print(i);
-        System.out.println();
+            System.out.println();
+        }
 
         //Middle section of Ocean Map
         for (int x = 0; x < grid.length; x++) {
@@ -217,12 +241,14 @@ public class BattleShips {
 
         //Last section of Ocean Map
         System.out.print("  ");
-        for (int i = 0; i < numCols; i++)
+        for (int i = 0; i < numCols; i++) {
             System.out.print(i);
-        System.out.println();
+            System.out.println();
+        }
     }
 
     /** Add database conncetion. */
+
     public static void database(String player1) throws SQLException {
 
         Connection con = DriverManager.getConnection("jdbc:h2:tcp://localhost/./prog", "sa", "");
@@ -231,12 +257,7 @@ public class BattleShips {
         System.out.println(insert(st, player1, 0));
         int pont = 100;
         System.out.println(pont(st, player1, pont));
-       /* ResultSet rs = st.executeQuery("select * from USERS");
-        while (rs.next()) {
-            System.out.println(rs.getString("NEV"));
-            System.out.println(rs.getInt("PONT"));
-        }
-        */
+
         con.close();
 
         // Display message for successful execution of program
@@ -245,29 +266,23 @@ public class BattleShips {
         System.out.println("");
     }
 
+
+    /** insert class. */
+
     public static int insert(Statement st, String name, Integer pont) throws SQLException {
         String query = "INSERT INTO USERS(NEV, PONT) VALUES ('" + name + "', " + pont + ");";
         return st.executeUpdate(query);
 
     }
 
+    /** pont class. */
+
     public static int pont(Statement st, String player1, Integer pont) throws SQLException {
-        String query = "UPDATE USERS SET PONT= " + pont  +  "WHERE NEV= " +"'" +player1 +"'" + ";";
+        String query = "UPDATE USERS SET PONT= " + pont  +  "WHERE NEV= " + "'" + player1 + "'" + ";";
         return st.executeUpdate(query);
 
     }
-    public static void message(){
-        System.out.println(" \n" +
-                        "▀█████████▄     ▄████████     ███         ███      ▄█          ▄████████    ▄████████    ▄█    █▄     ▄█     ▄███████▄ \n" +
-                        "  ███    ███   ███    ███ ▀█████████▄ ▀█████████▄ ███         ███    ███   ███    ███   ███    ███   ███    ███    ███ \n" +
-                        "  ███    ███   ███    ███    ▀███▀▀██    ▀███▀▀██ ███         ███    █▀    ███    █▀    ███    ███   ███▌   ███    ███ \n" +
-                        " ▄███▄▄▄██▀    ███    ███     ███   ▀     ███   ▀ ███        ▄███▄▄▄       ███         ▄███▄▄▄▄███▄▄ ███▌   ███    ███ \n" +
-                        "▀▀███▀▀▀██▄  ▀███████████     ███         ███     ███       ▀▀███▀▀▀     ▀███████████ ▀▀███▀▀▀▀███▀  ███▌ ▀█████████▀  \n" +
-                        "  ███    ██▄   ███    ███     ███         ███     ███         ███    █▄           ███   ███    ███   ███    ███        \n" +
-                        "  ███    ███   ███    ███     ███         ███     ███▌    ▄   ███    ███    ▄█    ███   ███    ███   ███    ███        \n" +
-                        "▄█████████▀    ███    █▀     ▄████▀      ▄████▀   █████▄▄██   ██████████  ▄████████▀    ███    █▀    █▀    ▄████▀    	\n" +
-                        "************************************************GAME OF TORPEDO 2022**************************************************");
-    }
+
 
 }
 
